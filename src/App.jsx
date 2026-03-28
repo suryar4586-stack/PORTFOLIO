@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+﻿import { useState, useEffect, useRef } from "react";
 import emailjs from "@emailjs/browser";
 
 // ─── Utility: cn ──────────────────────────────────────────────────────────────
@@ -235,12 +235,13 @@ function SkillCard({ skill, index }) {
 // ─── Projects ─────────────────────────────────────────────────────────────────
 const projects = [
   {
-    title: "Vending machine",
-    description: "An intelligent e-commerce platform powered by ML-driven recommendations, real-time inventory, and personalized UX with sub-100ms response times.",
-    tech: ["React", "Node.js", "Python", "MongoDB", "AWS"],
+    title: "Nova AI Compiler",
+    description: "An AI-powered online compiler experience that helps users write, run, and improve code faster with a clean web interface.",
+    tech: ["React", "JavaScript", "AI", "Compiler", "Netlify"],
     color: "#7c3aed",
-    emoji: "🛒",
+    emoji: "🧠",
     gradient: "linear-gradient(135deg, #7c3aed22, #3b82f622)",
+    liveUrl: "https://novacompiler.netlify.app/",
   },
   {
     description: "Real-time collaborative project management tool with WebSocket-powered updates, Gantt charts, and AI task prioritization for distributed teams.",
@@ -251,7 +252,7 @@ const projects = [
     gradient: "linear-gradient(135deg, #06b6d422, #8b5cf622)",
   },
   {
-    title: "CloudVault",
+    title: "STUDENTS FEEDBACK SYSTEM",
     description: "Enterprise-grade encrypted file storage with end-to-end encryption, version control, granular permissions, and 99.99% uptime SLA.",
     tech: ["React", "AWS S3", "Node.js", "TypeScript", "Redis"],
     color: "#f59e0b",
@@ -349,26 +350,34 @@ function ProjectCard({ project, index }) {
 
         {/* Links */}
         <div style={{ display: "flex", gap: 10 }}>
-          {["GitHub", "Live Demo"].map((label) => (
-            <button
-              key={label}
-              style={{
-                flex: 1,
-                padding: "9px 0",
-                background: label === "Live Demo" ? `linear-gradient(135deg, ${project.color}, ${project.color}cc)` : "transparent",
-                border: `1px solid ${label === "Live Demo" ? "transparent" : project.color + "55"}`,
-                borderRadius: 10,
-                color: label === "Live Demo" ? "#fff" : project.color,
-                fontSize: 12,
-                fontFamily: "'Space Mono', monospace",
-                fontWeight: 700,
-                cursor: "pointer",
-                transition: "all 0.2s",
-              }}
-            >
-              {label === "GitHub" ? "⌥ " : "→ "}{label}
-            </button>
-          ))}
+          {["GitHub", "Live Demo"].map((label) => {
+            const isLiveDemo = label === "Live Demo";
+            const canOpenLive = Boolean(project.liveUrl) && isLiveDemo;
+            return (
+              <button
+                key={label}
+                onClick={() => {
+                  if (canOpenLive) window.open(project.liveUrl, "_blank", "noopener,noreferrer");
+                }}
+                style={{
+                  flex: 1,
+                  padding: "9px 0",
+                  background: isLiveDemo ? `linear-gradient(135deg, ${project.color}, ${project.color}cc)` : "transparent",
+                  border: `1px solid ${isLiveDemo ? "transparent" : project.color + "55"}`,
+                  borderRadius: 10,
+                  color: isLiveDemo ? "#fff" : project.color,
+                  fontSize: 12,
+                  fontFamily: "'Space Mono', monospace",
+                  fontWeight: 700,
+                  cursor: canOpenLive || !isLiveDemo ? "pointer" : "not-allowed",
+                  opacity: isLiveDemo && !canOpenLive ? 0.65 : 1,
+                  transition: "all 0.2s",
+                }}
+              >
+                {label === "GitHub" ? "⌥ " : "→ "}{label}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
